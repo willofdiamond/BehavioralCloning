@@ -22,13 +22,13 @@ I am checking the data distribution in each bin and creating a CSV file with mor
 
 Data distribution histograms
 ---
-[training_error]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/ScreenShot.png)
-[biased_data_1]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/biased_data_1.png)
-[final_unbiased]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/final_unbiased_data.png)
-[fulldata]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/full_data_1.png)
-[test_histogram]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/test_histogram_1.png)
-[train_histogram]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/train_histogram_1.png)
-[unbiased_data]:(https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/unbiased_data_1.png)
+[training_error]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/ScreenShot.png
+[biased_data_1]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/biased_data_1.png
+[final_unbiased]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/final_unbiased_data.png
+[fulldata]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/full_data_1.png
+[test_histogram]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/test_histogram_1.png
+[train_histogram]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/train_histogram_1.png
+[unbiased_data]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/unbiased_data_1.png
 
 ### Dataset:
 Data from all the bins are combined to be used for training and validation.
