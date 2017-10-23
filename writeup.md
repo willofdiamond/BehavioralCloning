@@ -21,19 +21,8 @@ I am checking the data distribution in each bin and creating a CSV file with mor
 I am using 70 percentage of the data is used for training while the rest is used for testing.
 
 Data cleanup
-___
+---
 All the directories mentioned in clockwise has a csv file, images directory.Most of the data is found to be biased in the  data_distribution_check.py file is used to clean up data, this file also generate a new CSV file with all the unbiased data. All the new csv files are combined and there corresponding images are kept in a separate folder for training and validation.
-
-#### parameters used to control the amount of biased data in the final selected set
-biased_data_ratio = 0.2 # determines the percentage of the diased data to exist in the final dataset
-biased_left_slab  = 0 # left threshold from the center of biased data
-biased_right_slab = 0.005 # right threshold  from the center of biased data
-Data generated from the  simulator steering angle is highly biased as visible in the below image.
-[Full data histogram][uncleaned data]
-![Full data histogram][Cleaned data]
-Cleaned data is shown below
-![Full data histogram][uncleaned Biased Data]
-!
 
 #### Data distribution histograms
 
@@ -48,6 +37,19 @@ Cleaned data is shown below
 [unbiased data]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/unbiased_data_1.png
 
 [test result video]:https://www.youtube.com/watch?v=oh_4m896i4Q&feature=youtu.be
+#### parameters used to control the amount of biased data in the final selected set
+biased_data_ratio = 0.2 # determines the percentage of the diased data to exist in the final dataset
+biased_left_slab  = 0 # left threshold from the center of biased data
+biased_right_slab = 0.005 # right threshold  from the center of biased data
+Data generated from the  simulator steering angle is highly biased as visible in the below image.
+[Full data histogram][uncleaned data]
+![Full data histogram][uncleaned Biased Data]
+Cleaned data with 20 % of the biased data is shown below
+![Full data histogram][Cleaned data]
+
+
+
+
 
 
 Histogram distribution of the cleaned data
