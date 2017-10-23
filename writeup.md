@@ -113,7 +113,7 @@ I had initially started with a single input images layer and tried out different
 
 Techniques learned:
 ---
-Increasing in the number of convolution layers tend to Increasing the performance of the model. I had use the remaining 30% of the data for testing the model. I had used Adam optimizer and a small learning rate of 0.0001 for better generalization of the model. I had only two epochs as they are time consuming.
+Increasing the number of convolution layers tend to Increasing the performance of the model. I had use the remaining 30% of the data for testing the model. I had used Adam optimizer and a small learning rate of 0.0001 for better generalization of the model. I had only two epochs as they are time consuming.
 
 Take aways:
 ---
