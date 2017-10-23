@@ -28,14 +28,14 @@ with open(file_directory+"new_unbiased_driving_log.csv") as csvfile:
 
 def create_histogram(angle_array,bins=200,filename="histogram.png",range1=(-1,1)):
     n,bins,patches=plt.hist(angle_array,bins,range1)
-    plt.title(filename.split('.')[0])
-    plt.savefig(images_directory+filename)
-    plt.show()
+#    plt.title(filename.split('.')[0])
+#    plt.savefig(images_directory+filename)
+#    plt.show()
 
 
 #print("hi")
 np.random.seed(10)
-Split_data_ratio  = 0.5
+Split_data_ratio  = 0.70
 biased_data_ratio = 1.0
 biased_slab      = 0.005
 
@@ -87,7 +87,7 @@ def image_show(image,name="sample"):
     if ( not isinstance(name, str)):
         name ="display_name"
     cv2.imshow(name, image)
-    cv2.waitKey(1)
+    cv2.waitKey(0)
 
 def image_show_plt(image,name="sample"):
     plt.imshow(image)
@@ -107,13 +107,42 @@ def get_steering_angle(train_lines):
     return steering
 
 def Change_color(image):
-    # Needed as I trained my model on BGR image data
     return cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
 
+def Change_colorSpace(image,color_space = "RGB"):
+    img_features = np.zeros(image.shape)
+    #2) Apply color conversion if other than 'RGB'
+    if color_space != 'RGB':
+        if color_space == 'HSV':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+        elif color_space == 'LUV':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2LUV)
+        elif color_space == 'HLS':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+        elif color_space == 'YUV':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
+        elif color_space == 'YCrCb':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
+    else: img_features = np.copy(image)
+    
+    return img_features
+
 def preprocessing(image):
-    image = Change_color(image)
+    color_space = "RGB"
+
+#    print(image)
+#    image = Change_color(image)
+#    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="model_RGB_image.png")
     image = trim_sky_hood(image)
+#    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="model_trim_image1.png")
+    image = Change_colorSpace(image, color_space)
+#    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="model_HLS_image1.png")
+
+#    image = resize_image(image,(64,64))
+#    print("image size",image.shape)
     image = resize_image(image,(64,64))
+#    save_image(image,"/Users/hemanth/Udacity/behsavioralData/",name="model_resize_image1.png")
+#    print("image size",image.shape)
     return image
 
 
@@ -156,8 +185,11 @@ def generateData(file_directory,train_lines,batch_size =1):
                 steering_flipped=[]
                 if(not '' in train_lines[itr][0:4]):
                     #image = cv2.imread(file_directory+train_lines[itr][0])
+                    image = cv2.imread(file_directory+'IMG/'+train_lines[itr][0].split('/')[-1])
+                    image = preprocessing(image)
                     try:
                         #image = cv2.imread(train_lines[itr][0])
+#                        print("file_directory: ",file_directory+'IMG/'+train_lines[itr][0].split('/')[-1],"::",train_lines[itr][0].split('/')[-1],"::",file_directory)
                         image = cv2.imread(file_directory+'IMG/'+train_lines[itr][0].split('/')[-1])
                         image = preprocessing(image)
                         '''
@@ -262,7 +294,7 @@ def generateData(file_directory,train_lines,batch_size =1):
 
 
 
-batch_size1 = 1
+batch_size1 = 10
 
 from keras.models import Sequential
 from keras.layers.core import Flatten,Dense,Lambda,Activation,Reshape,Dropout
@@ -282,15 +314,19 @@ model = Sequential()
 #rows,col,channels=90,320,3
 # Normalize the data
 model.add(Lambda(lambda x: x/127.5 - 1.,output_shape=(rows,col,channels),input_shape=(rows,col,channels)))
-# Trying resining to save time
+# Trying resizing to save time
 #model.add(Reshape((64, 64)))
 # Convolution layer 1
-model.add(Conv2D(18,3,1,activation='relu'))
+model.add(Conv2D(25,5,1,activation='relu'))
 # Feature map 24@43x158
 #model.add(Activation('relu'))
 # Feature map 24@43x158
 # Convolution layer 2
-model.add(Conv2D(24,3,1,activation='relu'))
+model.add(Conv2D(34,5,1,activation='relu'))
+
+model.add(Conv2D(46,5,2,activation='relu'))
+
+model.add(Conv2D(64,5,2,activation='relu'))
 # Feature Map of shape 36@20x77
 #model.add(Activation('relu'))
 # Feature Map of shape 36@20x77
@@ -312,13 +348,13 @@ model.add(Conv2D(24,3,1,activation='relu'))
 # Flatten the planes
 model.add(Flatten())
 # Feature Map of shape 8448
-model.add(Dense(1000))
+model.add(Dense(200))
 model.add(Dropout(0.4))
-model.add(Dense(100))
+model.add(Dense(150))
 #model.add(Dropout(0.4))
 # Feature Map of shape 100
 model.add(Activation('relu'))
-model.add(Dense(50))
+model.add(Dense(80))
 #model.add(Dropout(0.3))
 # Feature Map of shape 50
 model.add(Activation('relu'))
@@ -328,18 +364,18 @@ model.add(Dense(10))
 model.add(Activation('relu'))
 model.add(Dense(1))
 
-
+#'''
 #optimizing the loss functon
 adam = ks.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 model.compile(loss='mse',optimizer=adam)
 print("No of training images:" +str((len(train_lines))))
 epochs = 2
-model.fit_generator(generateData(file_directory,train_lines,batch_size = 1), int((4*len(train_lines))/batch_size1),epochs,1,None,generateData(file_directory,test_lines,batch_size = 1),int((4*len(test_lines))/batch_size1) )
+model.fit_generator(generateData(file_directory,train_lines,batch_size = batch_size1), int((4*len(train_lines))/batch_size1),epochs,1,None,generateData(file_directory,test_lines,batch_size = batch_size1),int((4*len(test_lines))/batch_size1) )
 
-model.save('model_dataset_12.h5')
+model.save('model_dataset_20.h5')
 print('model saved')
 
-
+#'''
 '''
 # Used for the testing inputdata is read properly
 batch_size1 = 1
@@ -355,11 +391,11 @@ for i in range(28398,int((4*len(train_lines))/batch_size1)):
         print(vales_retured[1])
         break
 
+
+
+
+
 '''
-
-
-
-
 
 '''
 for i,j in generateData(file_directory,lines):

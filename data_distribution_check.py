@@ -12,9 +12,15 @@ augmented_steering_angle_list = []
 train_steering_angle_array = []
 test_steering_angle_array = []
 correction = 0.2
-file_directory = "/Users/hemanth/Udacity/behavioralData/data_images/"
-#file_directory = "/Users/hemanth/Udacity/behavioralData/data_images_2/"
-images_directory = "/Users/hemanth/Udacity/CarND-Behavioral-Cloning-P3/images/"
+file_directory = "/Users/hemanth/Udacity/behavioralData/data/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/data_images/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/data_images/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/1_left/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/1_right/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/1_missed_curves/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/1_offroad/"
+#file_directory = "/Users/hemanth/Udacity/behavioralData/d1_smoothcurve/"
+images_directory = "/Users/hemanth/Udacity/BehavioralCloning/images/"
 
 with open(file_directory+"driving_log.csv") as csvfile:
 #with open(file_directory+"new_unbiased_driving_log.csv") as csvfile:
@@ -36,14 +42,14 @@ with open(file_directory+"driving_log.csv") as csvfile:
 def create_histogram(angle_array,bins=200,filename="histogram.png",range1=(-1,1)):
     n,bins,patches=plt.hist(angle_array,bins,range1)
     plt.title(filename.split('.')[0])
-    #plt.savefig(images_directory+filename)
+    plt.savefig(filename)
     plt.show()
 
 np.random.seed(10)
-Split_data_ratio  = 0.8
-biased_data_ratio = 0.2
-biased_left_slab  = 0
-biased_right_slab = 0.005
+Split_data_ratio  = 0.7
+biased_data_ratio = 0.2 # determines the percentage of the diased data to exist in the final dataset
+biased_left_slab  = 0 # left threshold from the center of biased data
+biased_right_slab = 0.005 # right threshold  from the center of biased data
 
 steering_angle_array = np.array(steering_angle_list)
 #biased_index = np.where(abs(steering_angle_array)<biased_slab)

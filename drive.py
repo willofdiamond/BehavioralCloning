@@ -67,13 +67,41 @@ def resize_image(image,size=(64,64)):
 def image_show_plt(image,name="sample"):
     plt.imshow(image)
     plt.show()
+
+def Change_colorSpace(image,color_space = "RGB"):
+    img_features = np.zeros(image.shape)
+    #2) Apply color conversion if other than 'RGB'
+    if color_space != 'RGB':
+        if color_space == 'HSV':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+        elif color_space == 'LUV':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2LUV)
+        elif color_space == 'HLS':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+        elif color_space == 'YUV':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
+        elif color_space == 'YCrCb':
+            img_features = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
+    else: img_features = np.copy(image)
+    
+    return img_features
+
+
+
 def preprocessing(image):
-    #image = Change_color(image)
+    color_space = "RGB"
+    image = Change_color(image)
     #trim the image
+    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="drive_RGB_image.png")
     image = trim_sky_hood(image)
+    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="drive_trim_image1.png")
+    image = Change_colorSpace(image, color_space)
+    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="drive_HLS_image1.png")
     # Added to resize the input image
     image = resize_image(image,(64,64))
+    save_image(image,"/Users/hemanth/Udacity/behavioralData/",name="drive_resize_image1.png")
     return image
+
 
 
 @sio.on('telemetry')
