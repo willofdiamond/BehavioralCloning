@@ -53,14 +53,10 @@ Cleaned data with 20 % of the biased data is shown below
 
 
 Histogram distribution of the cleaned data
+Cleaned data with 20 percent of the biased data from all the directories histogram is shown below
 ![Full data histogram][Data used for Analysis]
 
-![Biased data histogram ][biased data]
-
-![Unbiased data histogram][unbiased data]
-
-![Final unbiased histogram][final unbiased]
-
+Cleaned data is divided in to training and testing data. Histogram of the training and test images are shown below
 ![Trained histogram ][train data histogram]
 
 ![Test histogram][test data histogram]
@@ -117,8 +113,15 @@ I had initially started with a single input images layer and tried out different
 
 Techniques learned:
 ---
+Increasing in the number of convolution layers tend to Increasing the performance of the model. I had use the remaining 30% of the data for testing the model. I had used Adam optimizer and a small learning rate of 0.0001 for better generalization of the model. I had only two epochs as they are time consuming.
+
+Take aways:
+---
+Need to run the model on GPU with more epochs so the car can be  stable at the middle of the road. Need to add more data around the sharp curves.
+
+
 
 Test Result:
 ---
-I am failing at the corners, lane with no white boundary and sharp curves
+The model performs
 [link to the project video][test result video]
