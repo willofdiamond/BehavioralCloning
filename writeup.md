@@ -39,11 +39,11 @@ All the directories mentioned in clockwise has a csv file, images directory.Most
 [test result video]:https://youtu.be/oh_4m896i4Q
 
 #### parameters used to control the amount of biased data in the final selected set
-biased_data_ratio = 0.2 # determines the percentage of the diased data to exist in the final dataset
+biased_data_ratio = 0.2 # determines the percentage of the biased data to exist in the final dataset
 biased_left_slab  = 0 # left threshold from the center of biased data
 biased_right_slab = 0.005 # right threshold  from the center of biased data
 Data generated from the  simulator steering angle is highly biased as visible in the below image.
-[Full data histogram][uncleaned data]
+![Full data histogram][uncleaned data]
 ![Full data histogram][uncleaned Biased Data]
 Cleaned data with 20 % of the biased data is shown below
 ![Full data histogram][Cleaned data]

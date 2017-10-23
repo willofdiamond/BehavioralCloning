@@ -38,6 +38,7 @@ np.random.seed(10)
 Split_data_ratio  = 0.70
 biased_data_ratio = 1.0
 biased_slab      = 0.005
+batch_size1 = 1
 
 steering_angle_array = np.array(steering_angle_list)
 biased_index = np.where(abs(steering_angle_array)<biased_slab)
@@ -294,7 +295,7 @@ def generateData(file_directory,train_lines,batch_size =1):
 
 
 
-batch_size1 = 10
+
 
 from keras.models import Sequential
 from keras.layers.core import Flatten,Dense,Lambda,Activation,Reshape,Dropout
