@@ -11,10 +11,13 @@ I had quantified my data collection into 5 bins, each bin consist of a CSV file 
 
 1. clockwise directory : Data taken by driving in clockwise track
 ![clockwise image][clockwise image]
+
 2. counter clockwise directory : Data taken by driving in counter-clockwise track
 ![counter clockwise image][counter clockwise image]
+
 3. Off road directory : Data gathered mostly from driving back to the road from the Off road
 ![offroad image][offroad image]
+
 4. Smooth curve directory: Data gathered while making smooth turns along the curves
 5. Missed curves directory: Data gathered where the trained model fails
 
@@ -163,8 +166,10 @@ The drive.py code is used to get data from the simulator and feed it to the mode
 Input image by using drive.py
 ![validation RGB image][validation RGB image]
 trimmed image
+
 ![validation trim image][validation trim image]
 Resized image
+
 ![validation resize image][validation resize image]
 
 The model performs
