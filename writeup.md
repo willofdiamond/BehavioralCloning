@@ -77,6 +77,7 @@ Data generated from the  simulator steering angle is highly biased as visible in
 
 ![Full data histogram][uncleaned Biased Data]
 ![Full data histogram][uncleaned data]
+
 Cleaned data with 20 % of the biased data is shown below
 ![Full data histogram][Cleaned data]
 
@@ -102,10 +103,14 @@ Data preprocessing
 ---
 * Images read by using openCV are read as BGR instead of RGB so they are first converted in to RGB
 ![train RGB image][train RGB image]
+
 * Images are cropped to remove the lower deck of the car, trees and sky from the images.
 ![train trim image][train trim image]
+
 * Images are resized to 64x64 to reduce the computation load
+
 ![train resize image][train resize image]
+
 * making the data unbiased by analyzing the histogram of steering data
 
 
@@ -164,15 +169,18 @@ Test Result:
 ---
 The drive.py code is used to get data from the simulator and feed it to the model. Predicted steering angle from the trained model is used to control the car.
 Input image by using drive.py
+
 ![validation RGB image][validation RGB image]
+
 trimmed image
 
 ![validation trim image][validation trim image]
+
 Resized image
 
 ![validation resize image][validation resize image]
 
-The model performs
+The Model performs can be seen in the
 [link to the project video][test result video]
 
 Reference:
