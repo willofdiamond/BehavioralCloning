@@ -67,12 +67,13 @@ All the directories mentioned in clockwise has a csv file, images directory.Most
 [test result video]:https://youtu.be/oh_4m896i4Q
 
 #### parameters used to control the amount of biased data in the final selected set
-biased_data_ratio = 0.2 # determines the percentage of the biased data to exist in the final dataset
-biased_left_slab  = 0 # left threshold from the center of biased data
-biased_right_slab = 0.005 # right threshold  from the center of biased data
+biased_data_ratio = 0.2 : determines the percentage of the biased data to exist in the final dataset
+biased_left_slab  = 0 : left threshold from the center of biased data
+biased_right_slab = 0.005 : right threshold  from the center of biased data
 Data generated from the  simulator steering angle is highly biased as visible in the below image.
-![Full data histogram][uncleaned data]
+
 ![Full data histogram][uncleaned Biased Data]
+![Full data histogram][uncleaned data]
 Cleaned data with 20 % of the biased data is shown below
 ![Full data histogram][Cleaned data]
 
@@ -99,7 +100,7 @@ Data preprocessing
 * Images read by using openCV are read as BGR instead of RGB so they are first converted in to RGB
 ![train RGB image][train RGB image]
 * Images are cropped to remove the lower deck of the car, trees and sky from the images.
-![[train trim image][train trim image]
+![train trim image][train trim image]
 * Images are resized to 64x64 to reduce the computation load
 ![train resize image][train resize image]
 * making the data unbiased by analyzing the histogram of steering data
@@ -130,13 +131,12 @@ I would like to thank Jeremy shannon [1]. Implementing his usage of weight regul
 
 |Layers                | window   | strides   |features|  activation |
 |:-------------:|:-------------:|:-----:|:--------:|:---------:|
-| convolution layer   | 5       | 1     |    25    |     relu      |
-| convolution layer   | 5       | 1     |   34     |   relu        |
-| convolution layer   | 5       |2      |   46     |    relu       |
-| convolution layer   | 5       |2      |   64    |    relu       |
-|Dense layer                |  none      |    none   |   200     |    relu      |
-|Dense layer                 |   none     |   none   |     150    |    relu       |
-|Dense layer                 |    none     |  none    |   80      |    relu       |
+| convolution layer   | 5       | 2   |    25    |     relu      |
+| convolution layer   | 5       | 2     |   34     |   relu        |
+| convolution layer   | 3       |2      |   46     |    relu       |
+| convolution layer   | 3      |3      |   64    |    relu       |
+|Dense layer                |  none      |    none   |   100     |    relu      |
+|Dense layer                 |   none     |   none   |     50    |    relu       |
 |Dense layer                 |   none     |  none    |     10    |   relu        |
 
 
@@ -160,9 +160,11 @@ Need to run the model on GPU with more epochs so the car can be  stable at the m
 Test Result:
 ---
 The drive.py code is used to get data from the simulator and feed it to the model. Predicted steering angle from the trained model is used to control the car.
-
+Input image by using drive.py
 ![validation RGB image][validation RGB image]
+trimmed image
 ![validation trim image][validation trim image]
+Resized image
 ![validation resize image][validation resize image]
 
 The model performs

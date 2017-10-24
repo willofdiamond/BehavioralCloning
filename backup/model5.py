@@ -199,7 +199,7 @@ def generateData(file_directory,train_lines,batch_size =1):
 #                        print("file_directory: ",file_directory+'IMG/'+train_lines[itr][0].split('/')[-1],"::",train_lines[itr][0].split('/')[-1],"::",file_directory)
                         image = cv2.imread(file_directory+'IMG/'+train_lines[itr][0].split('/')[-1])
                         image = preprocessing(image)
-                        
+
                         #print(image.shape)
                         if image is None:
                             print("image shown as None"+"Image path:",train_lines[itr])
@@ -291,7 +291,7 @@ model.add(Convolution2D(25, 5, 5, subsample=(2, 2), border_mode='valid', W_regul
 model.add(ELU())
 model.add(Convolution2D(34, 5, 5, subsample=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
 model.add(ELU())
-model.add(Convolution2D(46, 5, 5, subsample=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+model.add(Convolution2D(46, 3, 3, subsample=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
 model.add(ELU())
 
     #model.add(Dropout(0.50))
