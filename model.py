@@ -4,18 +4,24 @@ import cv2
 import sys
 import keras as ks
 import matplotlib.pyplot as plt
+from keras.regularizers import l2, activity_l2
+from keras.layers.advanced_activations import ELU
 import matplotlib.image as mpimg
+
 
 lines_list = []
 steering_angle_list = []
 train_steering_angle_array = []
 test_steering_angle_array = []
-file_directory = "/Users/hemanth/Udacity/behavioralData/data_images_2/"
-images_directory = "/Users/hemanth/Udacity/CarND-Behavioral-Cloning-P3/images/"
+
+#file_directory = "/Users/hemanth/Udacity/behavioralData/data_images_2/"
+file_directory = "/Users/hemanth/Udacity/data/"
+images_directory = "/Users/hemanth/Udacity/BehavioralCloning/images/"
 
 #images_directory = "/Users/hemanth/Udacity/CarND-Behavioral-Cloning-P3/images/"
 
-with open(file_directory+"new_unbiased_driving_log.csv") as csvfile:
+with open(file_directory+"driving_log.csv") as csvfile:
+#with open(file_directory+"new_unbiased_driving_log.csv") as csvfile:
     headers=1
     itr=0
     reader = csv.reader(csvfile,delimiter=',')
@@ -125,7 +131,7 @@ def Change_colorSpace(image,color_space = "RGB"):
         elif color_space == 'YCrCb':
             img_features = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
     else: img_features = np.copy(image)
-    
+
     return img_features
 
 def preprocessing(image):
@@ -304,6 +310,7 @@ from keras.layers.pooling import MaxPooling2D
 #from keras import losses
 #rows,col,channels=160,320,3
 rows,col,channels=64,64,3
+#rows,col,channels=90,320,3
  # NVIDIA Architecture
 model = Sequential()
 #read a  3@160x320 input planes
@@ -317,63 +324,90 @@ model = Sequential()
 model.add(Lambda(lambda x: x/127.5 - 1.,output_shape=(rows,col,channels),input_shape=(rows,col,channels)))
 # Trying resizing to save time
 #model.add(Reshape((64, 64)))
+
 # Convolution layer 1
-model.add(Conv2D(25,5,1,activation='relu'))
-# Feature map 24@43x158
-#model.add(Activation('relu'))
-# Feature map 24@43x158
-# Convolution layer 2
-model.add(Conv2D(34,5,1,activation='relu'))
+#'''
+# Add three 5x5 convolution layers (output depth 24, 36, and 48), each with 2x2 stride
+model.add(Convolution2D(25, 5, 5, subsample=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+model.add(Convolution2D(34, 5, 5, subsample=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+model.add(Convolution2D(46, 5, 5, subsample=(2, 2), border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
 
-model.add(Conv2D(46,5,2,activation='relu'))
+    #model.add(Dropout(0.50))
 
-model.add(Conv2D(64,5,2,activation='relu'))
-# Feature Map of shape 36@20x77
-#model.add(Activation('relu'))
-# Feature Map of shape 36@20x77
-# Convolution layer 3
-#model.add(Conv2D(36,3,2,activation='relu'))
-# Feature Map of shape 48@8x37
-#model.add(Activation('relu'))
-# Feature Map of shape 48@8x37
-# Convolution layer 4
-#model.add(Conv2D(64,3,1,activation='relu'))
-# Feature Map of shape 64@6x35
-#model.add(Activation('relu'))
-# Feature Map of shape 64@6x35
-# Convolution layer 5
-#model.add(Conv2D(64,3,1))
-# Feature Map of shape 64@4x33
-#model.add(Activation('relu'))
-# Feature Map of shape 64@4x33
-# Flatten the planes
+    # Add two 3x3 convolution layers (output depth 64, and 64)
+model.add(Convolution2D(64, 3, 3, border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+#model.add(Convolution2D(67, 3, 3, border_mode='valid', W_regularizer=l2(0.001)))
+#model.add(ELU())
+
+    # Add a flatten layer
 model.add(Flatten())
-# Feature Map of shape 8448
-model.add(Dense(200))
-model.add(Dropout(0.4))
-model.add(Dense(150))
-#model.add(Dropout(0.4))
-# Feature Map of shape 100
-model.add(Activation('relu'))
-model.add(Dense(80))
-#model.add(Dropout(0.3))
-# Feature Map of shape 50
-model.add(Activation('relu'))
-model.add(Dense(10))
-#model.add(Dropout(0.1))
-# Feature Map of shape 10
-model.add(Activation('relu'))
+
+    # Add three fully connected layers (depth 100, 50, 10), tanh activation (and dropouts)
+model.add(Dense(100, W_regularizer=l2(0.001)))
+model.add(ELU())
+model.add(Dense(50, W_regularizer=l2(0.001)))
+model.add(ELU())
+    #model.add(Dropout(0.50))
+    #model.add(Dropout(0.50))
+model.add(Dense(10, W_regularizer=l2(0.001)))
+model.add(ELU())
+    #model.add(Dropout(0.50))
+
+    # Add a fully connected output layer
 model.add(Dense(1))
 
 #'''
+'''
+
+model.add(Conv2D(24, 5, 2,border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+model.add(Conv2D(36, 5, 2,border_mode='valid',W_regularizer=l2(0.001)))
+model.add(ELU())
+model.add(Conv2D(48, 5, 2, border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+
+#model.add(Dropout(0.50))
+
+# Add two 3x3 convolution layers (output depth 64, and 64)
+model.add(Conv2D(64, 3, 3, border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+model.add(Conv2D(64, 3, 3, border_mode='valid', W_regularizer=l2(0.001)))
+model.add(ELU())
+
+# Add a flatten layer
+model.add(Flatten())
+
+# Add three fully connected layers (depth 100, 50, 10), tanh activation (and dropouts)
+model.add(Dense(100,W_regularizer=l2(0.001)))
+model.add(ELU())
+#model.add(Dropout(0.50))
+model.add(Dense(50, W_regularizer=l2(0.001)))
+model.add(ELU())
+#model.add(Dropout(0.50))
+model.add(Dense(10, W_regularizer=l2(0.001)))
+model.add(ELU())
+# Add a fully connected output layer
+model.add(Dense(1))
+
+'''
+
+
+
+
+
+#'''mode
 #optimizing the loss functon
 adam = ks.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 model.compile(loss='mse',optimizer=adam)
 print("No of training images:" +str((len(train_lines))))
-epochs = 2
+epochs = 7
 model.fit_generator(generateData(file_directory,train_lines,batch_size = batch_size1), int((4*len(train_lines))/batch_size1),epochs,1,None,generateData(file_directory,test_lines,batch_size = batch_size1),int((4*len(test_lines))/batch_size1) )
 
-model.save('model_dataset_20.h5')
+model.save('model.h5')
 print('model saved')
 
 #'''

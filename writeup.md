@@ -10,8 +10,11 @@ Data collection strategy
 I had quantified my data collection into 5 bins, each bin consist of a CSV file with images name, steering angle  and their corresponding images.
 
 1. clockwise directory : Data taken by driving in clockwise track
+![clockwise image][clockwise image]
 2. counter clockwise directory : Data taken by driving in counter-clockwise track
-3. Off road directory : Data gathered mostly from driving back to the road from the Off rode
+![counter clockwise image][counter clockwise image]
+3. Off road directory : Data gathered mostly from driving back to the road from the Off road
+![offroad image][offroad image]
 4. Smooth curve directory: Data gathered while making smooth turns along the curves
 5. Missed curves directory: Data gathered where the trained model fails
 
@@ -35,6 +38,31 @@ All the directories mentioned in clockwise has a csv file, images directory.Most
 [test data histogram]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/test_histogram_1.png
 [train data histogram]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/train_histogram_1.png
 [unbiased data]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/unbiased_data_1.png
+
+[clockwise image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/examples/clockwiseCentralimage.png
+
+[counter clockwise image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/examples/CounterclockwiseCentralImage.png
+
+[offroad image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/examples/offroadImages.png
+
+[train RGB image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/read_image.png
+
+[train trim image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/trim_sky_hood.png
+
+[train resize image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/resize_image.png
+
+[validation RGB image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/drive_RGB_image.png
+
+[validation trim image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/drive_trim_image.png
+
+[validation resize image]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/drive_resize_image1.png
+
+[Training and Validataion error]:https://github.com/willofdiamond/BehavioralCloning/blob/master/Images/TrainingValidataionerror.png
+
+
+
+
+
 
 [test result video]:https://youtu.be/oh_4m896i4Q
 
@@ -69,8 +97,11 @@ Cleaned data is divided in to training and testing data. Histogram of the traini
 Data preprocessing
 ---
 * Images read by using openCV are read as BGR instead of RGB so they are first converted in to RGB
+![train RGB image][train RGB image]
 * Images are cropped to remove the lower deck of the car, trees and sky from the images.
+![[train trim image][train trim image]
 * Images are resized to 64x64 to reduce the computation load
+![train resize image][train resize image]
 * making the data unbiased by analyzing the histogram of steering data
 
 
@@ -92,7 +123,10 @@ Data for models are generated as one by one and feed directly to the model to av
 
 Model Selections
 ---
+
 I had initially started with a single input images layer and tried out different models. I had tried  NVIDIA and Lenet models. Lenet is not does not give the desired result Nvidia architecture give good result. But I had further changed the model. My current model has four convolution layers.
+
+I would like to thank Jeremy shannon [1]. Implementing his usage of weight regularizers has reduced my training time significantly.
 
 |Layers                | window   | strides   |features|  activation |
 |:-------------:|:-------------:|:-----:|:--------:|:---------:|
@@ -107,7 +141,8 @@ I had initially started with a single input images layer and tried out different
 
 
 
-
+Training and validation error for the current model.
+![Training and Validataion error][Training and Validataion error]
 
 
 
@@ -118,11 +153,20 @@ Increasing the number of convolution layers tend to Increasing the performance o
 
 Take aways:
 ---
-Need to run the model on GPU with more epochs so the car can be  stable at the middle of the road. Need to add more data around the sharp curves.
+Need to run the model on GPU with more epochs so the car can be  stable at the middle of the road. Need to add more data around the sharp curves. Combine track 2 and track 1 data for a more generic driving. Need to explore max pooling instead of regularization.
 
 
 
 Test Result:
 ---
+The drive.py code is used to get data from the simulator and feed it to the model. Predicted steering angle from the trained model is used to control the car.
+
+![validation RGB image][validation RGB image]
+![validation trim image][validation trim image]
+![validation resize image][validation resize image]
+
 The model performs
 [link to the project video][test result video]
+
+Reference:
+1. https://github.com/jeremy-shannon/CarND-Behavioral-Cloning-Project
